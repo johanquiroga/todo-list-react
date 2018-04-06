@@ -42,6 +42,6 @@ export const getVisibleTodos = (state, filter) => {
     case 'completed':
       return allTodos.filter(todo => todo.completed);
     default:
-      return allTodos;
+      throw new Error(`Unknown filter: ${filter}`);
   }
 };
