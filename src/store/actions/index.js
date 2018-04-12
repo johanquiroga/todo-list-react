@@ -46,3 +46,18 @@ export const toggleTodo = (id) => (dispatch) =>
       response: normalize(response, schema.todo),
     });
   });
+
+export const deleteTodo = (id) => (dispatch) =>
+  api.deleteTodo(id).then(response => {
+    if (response.deleted) {
+      dispatch({
+        type: 'DELETE_TODO_SUCCESS',
+        response
+      });
+    } else {
+      dispatch({
+        type: 'DELETE_TODO_FAILURE',
+        response
+      });
+    }
+  });
