@@ -62,6 +62,14 @@ export const toggleTodo = (id) =>
 export const deleteTodo = (id) =>
   delay(500).then(() => {
     const index = fakeDatabase.todos.findIndex(t => t.id === id);
-    fakeDatabase.splice(index, 1);
-    return {deleted: true};
+    if (index === -1) {
+      return { deleted: false, error: 'ToDo not found' };
+    }
+    const removed = fakeDatabase.todos.splice(index, 1);
+
+    if(removed === []) {
+      return { deleted: false, error: 'ToDo not deleted' };
+    }
+
+    return { deleted: true, todos: removed };
   });

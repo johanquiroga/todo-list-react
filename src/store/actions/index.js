@@ -56,8 +56,7 @@ export const deleteTodo = (id) => (dispatch) =>
       });
     } else {
       dispatch({
-        type: 'DELETE_TODO_FAILURE',
-        response
+        type: 'DELETE_TODO_FAILURE'
       });
     }
   });
