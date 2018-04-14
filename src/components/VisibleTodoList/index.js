@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
+import { loadingCondition, errorCondition } from '../../constants';
 import TodoList from '../TodoList';
 import { getVisibleTodos, getIsFetching, getErrorMessage } from '../../store/reducers';
 import * as actions from '../../store/actions';
-import FetchError from '../FetchError';
+import { withLoading, withError } from '../../HOC';
 
 class VisibleTodoList extends Component {
   componentDidMount() {
@@ -23,20 +25,7 @@ class VisibleTodoList extends Component {
   }
 
   render() {
-    const { toggleTodo, deleteTodo, todos, isFetching, errorMessage } = this.props;
-
-    if (isFetching && !todos.length) {
-      return <p>Loading...</p>;
-    }
-
-    if (errorMessage && !todos.length) {
-      return (
-        <FetchError
-          message={errorMessage}
-          onRetry={() => this.fetchData()}
-        />
-      );
-    }
+    const { toggleTodo, deleteTodo, todos } = this.props;
 
     return (
       <TodoList
@@ -58,9 +47,14 @@ const mapStateToProps = (state, { match: { params }}) => {
   };
 };
 
-VisibleTodoList = withRouter(connect(
-  mapStateToProps,
-  actions
-)(VisibleTodoList));
+VisibleTodoList = compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    actions
+  ),
+  withError(errorCondition),
+  withLoading(loadingCondition),
+)(VisibleTodoList);
 
 export default VisibleTodoList;
