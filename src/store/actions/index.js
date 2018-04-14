@@ -52,11 +52,12 @@ export const deleteTodo = (id) => (dispatch) =>
     if (response.deleted) {
       dispatch({
         type: 'DELETE_TODO_SUCCESS',
-        response
+        response: normalize(response.todo, schema.todo)
       });
     } else {
       dispatch({
-        type: 'DELETE_TODO_FAILURE'
+        type: 'DELETE_TODO_FAILURE',
+        message: response.message || 'Something went wrong.'
       });
     }
   });

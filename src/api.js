@@ -25,10 +25,6 @@ const delay = (ms) =>
 
 export const fetchTodos = (filter) =>
   delay(500).then(() => {
-    if (Math.random() > 0.5) {
-      throw new Error('Boom!');
-    }
-
     switch (filter) {
       case 'all':
         return fakeDatabase.todos;
@@ -63,13 +59,13 @@ export const deleteTodo = (id) =>
   delay(500).then(() => {
     const index = fakeDatabase.todos.findIndex(t => t.id === id);
     if (index === -1) {
-      return { deleted: false, error: 'ToDo not found' };
+      return { deleted: false, message: 'ToDo not found' };
     }
     const removed = fakeDatabase.todos.splice(index, 1);
 
     if(removed === []) {
-      return { deleted: false, error: 'ToDo not deleted' };
+      return { deleted: false, message: 'ToDo not deleted' };
     }
 
-    return { deleted: true, todos: removed };
+    return { deleted: true, todo: removed[0] };
   });
