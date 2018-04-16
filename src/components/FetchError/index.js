@@ -1,10 +1,12 @@
 import React from 'react';
+import { Message, Button } from 'semantic-ui-react';
 
-const FetchError = ({ message, onRetry }) => (
-  <div>
-    <p>Could not process request. {message}</p>
-    <button onClick={onRetry}>Retry</button>
-  </div>
+let FetchError = ({ message, onRetry }) => (
+  <Message error>
+    <Message.Header>Could not process request:</Message.Header>
+    <p>{message}</p>
+    <Button onClick={onRetry}>Retry</Button>
+  </Message>
 );
 
 export default FetchError;
