@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Container, Segment, Header } from 'semantic-ui-react';
+import { Grid, Container, Header } from 'semantic-ui-react';
 import AddTodo from '../AddTodo';
 import VisibleTodoList from '../VisibleTodoList';
 import Footer from '../Footer';
@@ -10,6 +10,7 @@ const TodoApp = () => (
       <Grid
         textAlign='center'
         verticalAlign='middle'
+        style={{ height: '100%' }}
         padded
       >
         <Grid.Column>
