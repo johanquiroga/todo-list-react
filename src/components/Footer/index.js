@@ -4,7 +4,7 @@ import { Segment, Button, Grid } from 'semantic-ui-react';
 
 const Footer = () => (
   <Segment basic>
-    <Grid doubling columns={3}>
+    <Grid doubling columns={3} centered>
       <Grid.Row>
         <Grid.Column>
           <FilterLink filter='all'>
@@ -27,7 +27,7 @@ const Footer = () => (
           <Button circular fluid disabled>? Items left</Button>
         </Grid.Column>
         <Grid.Column floated='right'>
-          <Button circular fluid>Clear completed (?)</Button>
+          <Button circular fluid>Clean up (?)</Button>
         </Grid.Column>
       </Grid.Row>
     </Grid>
