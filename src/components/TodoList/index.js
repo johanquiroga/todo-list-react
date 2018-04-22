@@ -1,19 +1,22 @@
 import React from 'react';
 import Todo from '../Todo';
+import { List } from 'semantic-ui-react';
 
 const TodoList = ({
   todos,
-  onTodoClick
+  onTodoClick,
+  onDeleteClick
 }) => (
-  <ul>
+  <List link divided relaxed size='big'>
     {todos.map(todo =>
       <Todo
         key={todo.id}
         {...todo}
-        onClick={() => onTodoClick(todo.id)}
+        onTodoClick={() => onTodoClick(todo.id)}
+        onDeleteClick={() => onDeleteClick(todo.id)}
       />
     )}
-  </ul>
+  </List>
 );
 
 export default TodoList;
