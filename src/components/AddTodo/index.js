@@ -6,7 +6,7 @@ import { addTodo } from '../../store/actions';
 
 let AddTodo = ({dispatch, input, setInput}) => (
     <Form
-      size='large'
+      size='big'
       onSubmit={() => {
         if (input.trim() !== '') {
           dispatch(addTodo(input.trim()));
@@ -14,12 +14,14 @@ let AddTodo = ({dispatch, input, setInput}) => (
         }
       }}
     >
-      <Segment basic>
+      <Segment basic attached='top'>
         <Form.Input
           name='input'
           value={input}
           placeholder='What do you need?'
           fluid
+          transparent
+          size='big'
           onChange={(e, {name, value}) => setInput(value)}
         />
       </Segment>

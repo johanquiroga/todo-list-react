@@ -6,7 +6,8 @@ import { loadingCondition, errorCondition } from '../../constants';
 import TodoList from '../TodoList';
 import { getVisibleTodos, getIsFetching, getErrorMessage } from '../../store/reducers';
 import * as actions from '../../store/actions';
-import { withLoading, withError } from '../../HOC';
+import * as enhance from '../../HOC';
+import { Segment, Message } from 'semantic-ui-react';
 
 class VisibleTodoList extends Component {
   componentDidMount() {
@@ -25,14 +26,25 @@ class VisibleTodoList extends Component {
   }
 
   render() {
-    const { toggleTodo, deleteTodo, todos } = this.props;
+    const { toggleTodo, deleteTodo, todos, isFetching, errorMessage } = this.props;
+
+    if (todos.length === 0 && !isFetching && !errorMessage) {
+      return (
+        <Message warning attached='bottom'>
+          <Message.Header>Oops!</Message.Header>
+          <p>There's nothing to show here.</p>
+        </Message>
+      );
+    }
 
     return (
-      <TodoList
-        todos={todos}
-        onTodoClick={toggleTodo}
-        onDeleteClick={deleteTodo}
-      />
+      <Segment raised attached='bottom'>
+        <TodoList
+          todos={todos}
+          onTodoClick={toggleTodo}
+          onDeleteClick={deleteTodo}
+        />
+      </Segment>
     );
   }
 }
@@ -53,8 +65,8 @@ VisibleTodoList = compose(
     mapStateToProps,
     actions
   ),
-  withError(errorCondition),
-  withLoading(loadingCondition),
+  enhance.withError(errorCondition),
+  enhance.withLoading(loadingCondition),
 )(VisibleTodoList);
 
 export default VisibleTodoList;
