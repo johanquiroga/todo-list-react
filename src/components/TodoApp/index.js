@@ -5,25 +5,23 @@ import VisibleTodoList from '../VisibleTodoList';
 import Footer from '../Footer';
 
 const TodoApp = () => (
-  <div>
-    <Container text>
-      <Grid
-        textAlign='center'
-        verticalAlign='middle'
-        style={{ height: '100%' }}
-        padded
-      >
-        <Grid.Column>
-          <Header as='h1' color='teal'>
-            Todos
-          </Header>
-          <AddTodo />
-          <VisibleTodoList />
-          <Footer />
-        </Grid.Column>
-      </Grid>
-    </Container>
-  </div>
+  <Container text>
+    <Grid
+      textAlign='center'
+      verticalAlign='middle'
+      style={{ height: '100%' }}
+      padded
+    >
+      <Grid.Column>
+        <Header as='h1' color='teal'>
+          Todos
+        </Header>
+        <AddTodo />
+        <VisibleTodoList />
+        <Footer />
+      </Grid.Column>
+    </Grid>
+  </Container>
 );
 
 export default TodoApp;
