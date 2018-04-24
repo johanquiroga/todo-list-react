@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import byId, * as fromById from './byId';
 import createList, * as fromList from './createList';
+import createActionState, * as fromAction from './actionState';
 
 const listByFilter = combineReducers({
   all: createList('all'),
@@ -8,9 +9,16 @@ const listByFilter = combineReducers({
   completed: createList('completed'),
 });
 
+const actionState = combineReducers({
+  add: createActionState('add'),
+  delete: createActionState('delete'),
+  toggle: createActionState('toggle'),
+});
+
 const todos = combineReducers({
   byId,
-  listByFilter
+  listByFilter,
+  actionState,
 });
 
 export default todos;
@@ -25,3 +33,9 @@ export const getIsFetching = (state, filter) =>
 
 export const getErrorMessage = (state, filter) =>
   fromList.getErrorMessage(state.listByFilter[filter]);
+
+export const getIsActionLoading = (state, action) =>
+  fromAction.getIsActionLoading(state.actionState[action]);
+
+export const getActionErrorMessage = (state, action) =>
+  fromAction.getActionErrorMessage(state.actionState[action]);

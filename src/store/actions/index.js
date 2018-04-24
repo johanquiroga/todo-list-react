@@ -1,6 +1,6 @@
 import { normalize } from 'normalizr';
 import * as schema from './schema';
-import { getIsFetching } from '../reducers';
+import { getIsFetching, getIsActionLoading } from '../reducers';
 import * as api from '../../api';
 
 export const fetchTodos = (filter) => (dispatch, getState) => {
@@ -31,33 +31,100 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
   );
 };
 
-export const addTodo = (text) => (dispatch) =>
-  api.addTodo(text).then(response => {
-    dispatch({
-      type: 'ADD_TODO_SUCCESS',
-      response: normalize(response, schema.todo),
-    });
+export const addTodo = (text) => (dispatch, getState) => {
+  const actionName = 'add';
+
+  if (getIsActionLoading(getState(), actionName)) {
+    return Promise.resolve();
+  }
+
+  dispatch({
+    type: 'ADD_TODO_REQUEST',
+    actionName,
   });
 
-export const toggleTodo = (id) => (dispatch) =>
-  api.toggleTodo(id).then(response => {
-    dispatch({
-      type: 'TOGGLE_TODO_SUCCESS',
-      response: normalize(response, schema.todo),
-    });
-  });
-
-export const deleteTodo = (id) => (dispatch) =>
-  api.deleteTodo(id).then(response => {
-    if (response.deleted) {
+  return api.addTodo(text).then(
+    response => {
       dispatch({
-        type: 'DELETE_TODO_SUCCESS',
-        response: normalize(response.todo, schema.todo)
+        type: 'ADD_TODO_SUCCESS',
+        response: normalize(response, schema.todo),
+        actionName
       });
-    } else {
+    },
+    error => {
       dispatch({
-        type: 'DELETE_TODO_FAILURE',
-        message: response.message || 'Something went wrong.'
+        type: 'ADD_TODO_FAILURE',
+        actionName,
+        message: error.message || 'Something went wrong.'
       });
     }
+  );
+}
+
+export const toggleTodo = (id) => (dispatch, getState) => {
+  const actionName = 'toggle';
+
+  if (getIsActionLoading(getState(), actionName)) {
+    return Promise.resolve();
+  }
+
+  dispatch({
+    type: 'TOGGLE_TODO_REQUEST',
+    actionName,
   });
+
+  return api.toggleTodo(id).then(
+    response => {
+      dispatch({
+        type: 'TOGGLE_TODO_SUCCESS',
+        actionName,
+        response: normalize(response, schema.todo),
+      });
+    },
+    error => {
+      dispatch({
+        type: 'TOGGLE_TODO_FAILURE',
+        actionName,
+        message: error.message || 'Something went wrong.'
+      });
+    }
+  );
+};
+
+export const deleteTodo = (id) => (dispatch, getState) => {
+  const actionName = 'delete';
+
+  if (getIsActionLoading(getState(), actionName)) {
+    return Promise.resolve();
+  }
+
+  dispatch({
+    type: 'DELETE_TODO_REQUEST',
+    actionName,
+  });
+
+  return api.deleteTodo(id).then(
+    response => {
+      if (response.deleted) {
+        dispatch({
+          type: 'DELETE_TODO_SUCCESS',
+          response: normalize(response.todo, schema.todo),
+          actionName,
+        });
+      } else {
+        dispatch({
+          type: 'DELETE_TODO_FAILURE',
+          actionName,
+          message: response.message || 'Something went wrong.'
+        });
+      }
+    },
+    error => {
+      dispatch({
+        type: 'DELETE_TODO_FAILURE',
+        actionName,
+        message: error.message || 'Something went wrong.'
+      });
+    }
+  );
+};

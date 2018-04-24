@@ -58,11 +58,9 @@ const createList = (filter) => {
     }
     switch (action.type) {
       case 'FETCH_TODOS_FAILURE':
-      case 'DELETE_TODO_FAILURE':
         return action.message;
       case 'FETCH_TODOS_REQUEST':
       case 'FETCH_TODOS_SUCCESS':
-      case 'DELETE_TODO_SUCCESS':
         return null;
       default:
         return state;
